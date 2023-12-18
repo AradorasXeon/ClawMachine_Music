@@ -6,7 +6,7 @@
 #ifndef MELODIES_H
 #define MELODIES_H
 
-const int GAME_OF_THRONES_melody[] PROGMEM = {
+const uint16_t GAME_OF_THRONES_melody[] PROGMEM = {
   NOTE_G4, NOTE_C4, NOTE_DS4, NOTE_F4, NOTE_G4, NOTE_C4, NOTE_DS4, NOTE_F4,
   NOTE_G4, NOTE_C4, NOTE_DS4, NOTE_F4, NOTE_G4, NOTE_C4, NOTE_DS4, NOTE_F4,
   NOTE_G4, NOTE_C4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_C4, NOTE_E4, NOTE_F4,
@@ -54,7 +54,7 @@ const int GAME_OF_THRONES_melody[] PROGMEM = {
   NOTE_C6, NOTE_G5, NOTE_GS5, NOTE_AS5, NOTE_C6, NOTE_G5, NOTE_GS5, NOTE_AS5
 };
 
-const int GAME_OF_THRONES_durations[] PROGMEM = {
+const uint8_t GAME_OF_THRONES_durations[] PROGMEM = {
   8, 8, 16, 16, 8, 8, 16, 16,
   8, 8, 16, 16, 8, 8, 16, 16,
   8, 8, 16, 16, 8, 8, 16, 16,
@@ -104,7 +104,7 @@ const int GAME_OF_THRONES_durations[] PROGMEM = {
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
-const int HOME_ALONE_melody[] PROGMEM = {
+const uint16_t HOME_ALONE_melody[] PROGMEM = {
   NOTE_E4, NOTE_C5, NOTE_B4, NOTE_B4,
   NOTE_C5, NOTE_B4, NOTE_F4, NOTE_G4,
   NOTE_G4, NOTE_E4, NOTE_G4, NOTE_E4,
@@ -134,7 +134,7 @@ const int HOME_ALONE_melody[] PROGMEM = {
   NOTE_C5
 };
 
-const int HOME_ALONE_durations[] PROGMEM = {
+const uint8_t HOME_ALONE_durations[] PROGMEM = {
   4, 8, 8, 2,
   8, 8, 4, 4,
   4, 4, 4, 4,
@@ -166,7 +166,7 @@ const int HOME_ALONE_durations[] PROGMEM = {
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
-const int PINK_PANTHER_melody[] PROGMEM = {
+const uint16_t PINK_PANTHER_melody[] PROGMEM = {
   REST, REST, REST, NOTE_DS4, 
   NOTE_E4, REST, NOTE_FS4, NOTE_G4, REST, NOTE_DS4,
   NOTE_E4, NOTE_FS4,  NOTE_G4, NOTE_C5, NOTE_B4, NOTE_E4, NOTE_G4, NOTE_B4,   
@@ -187,7 +187,7 @@ const int PINK_PANTHER_melody[] PROGMEM = {
   NOTE_G4, NOTE_E4, NOTE_D4, NOTE_E4, NOTE_E4, NOTE_E4
 };
 
-const int PINK_PANTHER_durations[] PROGMEM = {
+const uint8_t PINK_PANTHER_durations[] PROGMEM = {
   2, 4, 8, 8, 
   4, 8, 8, 4, 8, 8,
   8, 8,  8, 8, 8, 8, 8, 8,   
@@ -210,7 +210,7 @@ const int PINK_PANTHER_durations[] PROGMEM = {
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
-const int PIRATES_melody[] PROGMEM = {
+const uint16_t PIRATES_melody[] PROGMEM = {
   NOTE_E4, NOTE_G4, NOTE_A4, NOTE_A4, REST,
   NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, REST,
   NOTE_C5, NOTE_D5, NOTE_B4, NOTE_B4, REST,
@@ -264,7 +264,7 @@ const int PIRATES_melody[] PROGMEM = {
   NOTE_B4, NOTE_C5, REST, NOTE_B4, REST, NOTE_A4
 };
 
-const int PIRATES_durations[] PROGMEM = {
+const uint8_t PIRATES_durations[] PROGMEM = {
   8, 8, 4, 8, 8,
   8, 8, 4, 8, 8,
   8, 8, 4, 8, 8,

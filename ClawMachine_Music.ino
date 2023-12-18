@@ -1,5 +1,6 @@
 // https://projecthub.arduino.cc/tmekinyan/playing-popular-songs-with-arduino-and-a-buzzer-546f4a
 
+//#define DEBUG
 #include "pitches.h"
 #include "musics.h"
 #include "melodies.h"
@@ -7,12 +8,13 @@
 
 #define BUZZER_PIN 3
 
+
 Music* Music::instance = nullptr; //have to be 'assigned'
 Music msgMusic(false);
-PlayableMusic pirates(BUZZER_PIN, PIRATES_melody, PIRATES_durations, sizeof(PIRATES_melody), 1000, 1.3);
-PlayableMusic gameOfThrones(BUZZER_PIN, GAME_OF_THRONES_melody, GAME_OF_THRONES_durations, sizeof(GAME_OF_THRONES_melody), 1000, 1.3);
-PlayableMusic pinkPanther(BUZZER_PIN, PINK_PANTHER_melody, PINK_PANTHER_durations, sizeof(PINK_PANTHER_melody), 1000, 1.3);
-PlayableMusic homeAlone(BUZZER_PIN, HOME_ALONE_melody, HOME_ALONE_durations, sizeof(HOME_ALONE_melody), 1000, 1.3);
+PlayableMusic pirates(BUZZER_PIN, PIRATES_melody, PIRATES_durations, sizeof(PIRATES_melody)/sizeof(PIRATES_melody[0]), 1000, 1.5);
+PlayableMusic gameOfThrones(BUZZER_PIN, GAME_OF_THRONES_melody, GAME_OF_THRONES_durations, sizeof(GAME_OF_THRONES_melody)/sizeof(GAME_OF_THRONES_melody[0]), 1000, 1.5);
+PlayableMusic pinkPanther(BUZZER_PIN, PINK_PANTHER_melody, PINK_PANTHER_durations, sizeof(PINK_PANTHER_melody)/sizeof(PINK_PANTHER_melody[0]), 1000, 1.5);
+PlayableMusic homeAlone(BUZZER_PIN, HOME_ALONE_melody, HOME_ALONE_durations, sizeof(HOME_ALONE_melody)/sizeof(HOME_ALONE_melody[0]), 1000, 1.5);
 
 CurrentMusic currentlyPlayedMusic;
 
@@ -35,6 +37,7 @@ void setup()
   msgMusic.instance = &msgMusic;
   Wire.onReceive(inComingMsg);
 
+  msgMusic.setGamePlayMusic();
   //Debug:
   #ifdef DEBUG
   Serial.begin(115200);
@@ -101,6 +104,9 @@ void loop()
   }
   else
   {
+    #ifdef DEBUG
+    Serial.println("MUSIC IS SET!");
+    #endif // DEBUG
     startWantedMusic(msgMusic.getMusicToPlay());
   }
 }

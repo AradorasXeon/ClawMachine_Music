@@ -1,16 +1,21 @@
 /// @brief Class to contain music, can be used to start or stop given music. The class is designed with the requiments of the project, so the only thing this board will do is play music based on i2c messages
+
+#include "/home/krisztian/arduino/ClawMachine_Nano/millisTimer.hpp"
+
 class PlayableMusic
 {
     public:
-    PlayableMusic(int musicPin, const int* PROGMEM noteList, const int* PROGMEM noteDurationList, int lengthOfMusic, int tempo = 1000, float breakTime = 1.3f);
+    PlayableMusic(int musicPin, const uint16_t* PROGMEM noteList, const uint8_t* PROGMEM noteDurationList, int lengthOfMusic, int tempo = 1000, float breakTime = 1.3f);
 
     void startMusic();
     void stopMusic();
     bool isStopped();
 
     private:
-    const int* _noteList;
-    const int* _noteDurationList;
+    const uint16_t* PROGMEM _noteList;
+    const uint8_t* PROGMEM _noteDurationList;
+    uint16_t _note;
+    uint8_t _noteDuration;
     int _tempo;
     int _lengthOfList;
     float _breakTime;
@@ -25,24 +30,32 @@ class PlayableMusic
 /// @param noteDurationList pointer to the array, where for each note there is a duration
 /// @param tempo if bigger the music will be slower, if lower the music will be faster default is 1000
 /// @param breakTime a little delay after each note, note duration will be multipled by this number and no sound will be played for this amount of ms
-PlayableMusic::PlayableMusic(int musicPin, const int* PROGMEM noteList, const int* PROGMEM noteDurationList, int lengthOfMusic, int tempo = 1000, float breakTime = 1.3f)
+PlayableMusic::PlayableMusic(int musicPin, const uint16_t* PROGMEM noteList, const uint8_t* PROGMEM noteDurationList, int lengthOfMusic, int tempo = 1000, float breakTime = 1.3f)
 {
     if(noteList == nullptr || noteDurationList == nullptr)
     {
         #ifdef DEBUG
             Serial.println("Empty PlayableMusic was created, adding zeros to it");
         #endif // DEBUG
-        int zero[] = {0};
-        int length[] = {4};
+        /*
+        uint16_t zero[] = {0};
+        uint8_t length[] = {4};
         _noteList = zero;
         _noteDurationList = length;
+        _lengthOfList = 1;
+        */
+       //throw error;
+       //assert(5 == 10);
     }
-    _noteList = noteList;
-    _noteDurationList = noteDurationList;
+    else
+    {
+        _noteList = noteList;
+        _noteDurationList = noteDurationList;
+        _lengthOfList = lengthOfMusic;
+    }
     _tempo = tempo;
     _breakTime = breakTime;
     _musicPin = musicPin;
-    _lengthOfList = lengthOfMusic;
     _isExited = false;
 
     pinMode(_musicPin, OUTPUT);
@@ -51,6 +64,9 @@ PlayableMusic::PlayableMusic(int musicPin, const int* PROGMEM noteList, const in
 /// @brief start playing the music
 void PlayableMusic::startMusic()
 {
+    #ifdef DEBUG
+        Serial.println("PlayableMusic::startMusic() called");
+    #endif // DEBUG
     _continuePlaying = true;
     _isExited = false;
     while(1)
@@ -61,13 +77,25 @@ void PlayableMusic::startMusic()
             {
                 //to calculate the note duration, take one second divided by the note type.
                 //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-                int duration = _tempo / _noteDurationList[note];
+                _noteDuration = pgm_read_byte(_noteDurationList + note);
+                int duration = _tempo / _noteDuration;
+                _note = pgm_read_word(_noteList + note);
+                #ifdef DEBUG
+                    //Serial.println(duration);
+                    Serial.print("Duration: ");
+                    Serial.println(_noteDuration);
+                    Serial.print("note: ");
+                    Serial.println(_note);
+                #endif // DEBUG
                 tone(_musicPin, _noteList[note], duration);
-
                 //to distinguish the notes, set a minimum time between them.
                 int pauseBetweenNotes = duration * _breakTime;
-                delay(pauseBetweenNotes); //should use my own delay later
+                #ifdef DEBUG
+                    //Serial.println(pauseBetweenNotes);
+                    Serial.println("--------------------------------------");
 
+                #endif // DEBUG
+                MillisTimer::delayThisMuch(pauseBetweenNotes);
                 //stop the tone playing:
                 noTone(_musicPin);
             }
@@ -76,6 +104,9 @@ void PlayableMusic::startMusic()
                 goto EXIT_FROM_LOOP;
             }
         }
+        #ifdef DEBUG
+            Serial.println("Played song once.");
+        #endif // DEBUG
     }
     EXIT_FROM_LOOP:
     #ifdef DEBUG
