@@ -87,7 +87,7 @@ void PlayableMusic::startMusic()
                     Serial.print("note: ");
                     Serial.println(_note);
                 #endif // DEBUG
-                tone(_musicPin, _noteList[note], duration);
+                tone(_musicPin, _note, duration);
                 //to distinguish the notes, set a minimum time between them.
                 int pauseBetweenNotes = duration * _breakTime;
                 #ifdef DEBUG
