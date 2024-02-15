@@ -1,6 +1,6 @@
 /// @brief Class to contain music, can be used to start or stop given music. The class is designed with the requiments of the project, so the only thing this board will do is play music based on i2c messages
 
-#include "/home/krisztian/arduino/ClawMachine_Nano/millisTimer.hpp"
+#include "/home/krisztian/arduino/clawnanov2/millisTimer.hpp"
 
 class PlayableMusic
 {
@@ -80,6 +80,7 @@ void PlayableMusic::startMusic()
                 _noteDuration = pgm_read_byte(_noteDurationList + note);
                 int duration = _tempo / _noteDuration;
                 _note = pgm_read_word(_noteList + note);
+                /*
                 #ifdef DEBUG
                     //Serial.println(duration);
                     Serial.print("Duration: ");
@@ -87,14 +88,17 @@ void PlayableMusic::startMusic()
                     Serial.print("note: ");
                     Serial.println(_note);
                 #endif // DEBUG
+                */
                 tone(_musicPin, _note, duration);
                 //to distinguish the notes, set a minimum time between them.
                 int pauseBetweenNotes = duration * _breakTime;
+                /*
                 #ifdef DEBUG
                     //Serial.println(pauseBetweenNotes);
                     Serial.println("--------------------------------------");
 
                 #endif // DEBUG
+                */
                 MillisTimer::delayThisMuch(pauseBetweenNotes);
                 //stop the tone playing:
                 noTone(_musicPin);

@@ -1,10 +1,12 @@
 // https://projecthub.arduino.cc/tmekinyan/playing-popular-songs-with-arduino-and-a-buzzer-546f4a
 
-//#define DEBUG
+#define DEBUG
 #include "pitches.h"
 #include "musics.h"
 #include "melodies.h"
-#include "/home/krisztian/arduino/ClawMachine_Nano/communicationMusic.h"
+#include "/home/krisztian/arduino/clawnanov2/communicationMusic.h"
+#include <Wire.h>
+
 
 #define BUZZER_PIN 3
 
@@ -45,9 +47,11 @@ void setup()
   #endif // DEBUG
 }
 
-void inComingMsg(int byteCount)
+static void inComingMsg(int byteCount)
 {
-  currentlyPlayedMusic = msgMusic.getMusicToPlay();       //save the actual music before reading i2c msg
+  #ifdef DEBUG
+  Serial.println(byteCount);
+  #endif // DEBUG
   Music::onReceiveCallBack(byteCount);                    //reading i2c msg
   if (currentlyPlayedMusic != msgMusic.getMusicToPlay())  //check if the currently played music is different from the requested one
   {
@@ -66,16 +70,20 @@ void stopActualMusic(CurrentMusic curPlayed)
     if(curPlayed == musicPairs[i].pairedMusicType)
     {
       musicPairs[i].musicClass.stopMusic();
+      /*
       while(!musicPairs[i].musicClass.isStopped())
       {
         //just not letting it to end while it is note stopped for sure
       }
+      */
     }
   }
 
+  /*
   #ifdef DEBUG
   Serial.println("Cannot stop actual music, because curPlayed is not in the list.");
   #endif // DEBUG
+  */
 }
 
 void startWantedMusic(CurrentMusic wantedMusic)
@@ -85,6 +93,7 @@ void startWantedMusic(CurrentMusic wantedMusic)
   {
     if(wantedMusic == musicPairs[i].pairedMusicType)
     {
+      currentlyPlayedMusic = wantedMusic;
       musicPairs[i].musicClass.startMusic();
     }
   }
